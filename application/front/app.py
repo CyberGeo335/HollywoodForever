@@ -5,6 +5,7 @@ import io
 import base64
 
 URL = "http://backend:8000/back/"
+# URL = "http://localhost:8000/back/"
 
 st.title("Загрузка фотографии")
 
@@ -25,19 +26,16 @@ if uploaded_file is not None:
             cropped_image = Image.open(io.BytesIO(base64.b64decode(cropped["image"])))
             st.image(cropped_image, caption="Обрезанная фотография", use_column_width=True)
 
-            # Display OCR results from EasyOCR
             st.write("EasyOCR результаты:")
             for ocr in cropped["ocr_results_easyocr"]:
                 st.write(f"Распознанный текст: {ocr['text']}")
                 st.write(f"Вероятность: {ocr['probability'] * 100:.2f}%")
 
-            # Display OCR results from PaddleOCR
             st.write("PaddleOCR результаты:")
             for ocr in cropped["ocr_results_paddleocr"]:
                 st.write(f"Распознанный текст: {ocr['text']}")
                 st.write(f"Вероятность: {ocr['probability'] * 100:.2f}%")
 
-            # Display Median Voting Result
             st.write("Результат медианного голосования:")
             st.write(f"Распознанный текст: {cropped['voting_result']['text']}")
             st.write(f"Медианная вероятность: {cropped['voting_result']['median_probability'] * 100:.2f}%")

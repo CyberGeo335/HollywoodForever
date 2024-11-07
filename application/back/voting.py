@@ -1,5 +1,6 @@
 from statistics import median
 
+
 def median_voting(ocr_results_easyocr, ocr_results_paddleocr):
     voting_results = []
     for easyocr_results, paddleocr_results in zip(ocr_results_easyocr, ocr_results_paddleocr):

@@ -13,14 +13,11 @@ async def upload_photo(file: UploadFile = File(...)):
     image_data = await file.read()
     cropped_images = crop_image(image_data)
 
-    # Perform OCR on cropped images
     ocr_results_easyocr = recognize_text_easyocr(cropped_images)
     ocr_results_paddleocr = recognize_text_paddleocr(cropped_images)
 
-    # Calculate median voting results
     voting_results = median_voting(ocr_results_easyocr, ocr_results_paddleocr)
 
-    # Encode images and send OCR results
     cropped_images_base64 = []
     for img, ocr_easy, ocr_paddle, voting_result in zip(cropped_images, ocr_results_easyocr, ocr_results_paddleocr,
                                                         voting_results):
