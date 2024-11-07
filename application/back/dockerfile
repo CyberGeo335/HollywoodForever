@@ -1,0 +1,30 @@
+# Базовый образ Python
+FROM python:3.10
+
+# Устанавливаем рабочую директорию
+WORKDIR /app/back
+
+# Устанавливаем необходимые библиотеки
+RUN apt-get update && apt-get install -y \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Копируем файлы проекта
+COPY requirements.txt ./
+COPY main.py ./
+COPY cropping_files.py ./
+COPY ocr_recognize.py ./
+COPY voting.py ./
+
+# Копируем директорию model_repository с моделями
+COPY model_repository /app/back/model_repository
+
+# Устанавливаем зависимости
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Открываем порт для FastAPI
+EXPOSE 8000
+
+# Запуск FastAPI сервера
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
